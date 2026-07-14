@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------- palette --------------------------------
+   chalk    #EFEFEA   swiss poster white (light sections)
+   carbon   #0F0F0D   asphalt black (dark sections)
+   smoke    #1C1C19   raised dark panel
+   signal   #E10600   racing red (the only colour)
+   silver   #9B9B93   secondary text on dark
+   graphite #3A3A35   secondary text on light
+------------------------------------------------------------------------- */
+
+@theme {
+  --color-chalk: #efefea;
+  --color-carbon: #0f0f0d;
+  --color-smoke: #1c1c19;
+  --color-signal: #e10600;
+  --color-silver: #9b9b93;
+  --color-graphite: #3a3a35;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-anton);
+  --font-body: var(--font-grotesk);
+  --font-mono: var(--font-plex);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  background: var(--color-chalk);
+  color: var(--color-carbon);
+  color-scheme: light;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-chalk);
+}
+
+/* Anton: condensed poster grotesk, always set tight and uppercase */
+@utility font-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.86;
+}
+
+/* Headline text masking: paint an image/gradient inside the letterforms */
+@utility text-masked {
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The animated livery gradient used inside the hero wordmark */
+@utility bg-livery {
+  background-image: linear-gradient(
+    115deg,
+    #e10600 0%,
+    #7a0400 22%,
+    #0f0f0d 40%,
+    #3a3a35 55%,
+    #e10600 72%,
+    #ff5c40 86%,
+    #0f0f0d 100%
+  );
+  background-size: 300% 300%;
+  animation: livery-pan 9s ease-in-out infinite alternate;
+}
+
+@keyframes livery-pan {
+  from {
+    background-position: 0% 40%;
+  }
+  to {
+    background-position: 100% 60%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  .bg-livery {
+    animation: none;
+  }
 }
